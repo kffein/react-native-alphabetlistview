@@ -1,49 +1,34 @@
 'use strict';
 
-import React, {
-  Component,
-  PropTypes
-} from 'react';
-import ReactNative, {
-  StyleSheet,
-  View,
-  Text,
-  NativeModules
-} from 'react-native';
-
-const { UIManager } = NativeModules;
-
-export default class SectionHeader extends Component {
+var ReactNative = require('react-native');
+var {StyleSheet, View, Text, UIManager} = ReactNative;
+var React = require('react');
+var {Component, PropTypes} = React;
+class SectionHeader extends Component {
 
   componentDidMount() {
-    this.props.updateTag && this.props.updateTag(ReactNative.findNodeHandle(this.refs.view), this.props.sectionId);
+    this.props.updateTag && this.props.updateTag(this.refs.view.getNodeHandle(), this.props.sectionId);
   }
 
   render() {
-    const SectionComponent = this.props.component;
-    const content = SectionComponent ?
+    var SectionComponent = this.props.component;
+    var content = SectionComponent ?
       <SectionComponent {...this.props} /> :
-      <Text>{this.props.title}</Text>;
+      <Text style={styles.text}>{this.props.title}</Text>;
 
     return (
-      <View ref="view">
+      <View ref="view" style={styles.container}>
         {content}
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+var styles = StyleSheet.create({
   container: {
-    backgroundColor:'#f8f8f8',
-    borderTopWidth: 1,
-    borderTopColor: '#ececec'
+    height: 40,
   },
   text: {
-    fontWeight: '700',
-    paddingTop:2,
-    paddingBottom:2,
-    paddingLeft: 2
   }
 });
 
@@ -66,4 +51,7 @@ SectionHeader.propTypes = {
    * A function used to propagate the root nodes handle back to the parent
    */
   updateTag: PropTypes.func
+
 };
+
+module.exports = SectionHeader;
